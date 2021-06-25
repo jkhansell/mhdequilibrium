@@ -1,12 +1,6 @@
 # MHD Equilibrium
 
-This project is based on the Hirshman 1983 -1998 papers on: 
-    
-- Optimized Fourier representations for threedimensional magnetic surfaces (Hirshman 1985)
--  Explicit spectrally optimized Fourier series for nested magnetic surfaces (Hirshman 1998)
-- Steepestdescent moment method for threedimensional magnetohydrodynamic equilibria (Hirshman 1983)
-
-The project will be coded on the Python environment.
+This is a repository of the scripts made for the ITCR Plasma Laboratory. Takes into account analysis and variable calculations from computational simulations of the MEDUSA and SCR 1 devices. 
 
 Project on-course.
 
