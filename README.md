@@ -10,9 +10,11 @@ The project will be coded on the Python environment.
 
 Project on-course.
 
-Developers: 
+Developer: 
 
+- Johansell Villalobos Cubillo -- IF
+
+Collaborators: 
 
 - Allan González Villalobos -- IF
 - Bryam Núñez Flores -- IF 
-- Johansell Villalobos Cubillo -- IF
