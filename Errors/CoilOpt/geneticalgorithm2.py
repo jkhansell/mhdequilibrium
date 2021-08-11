@@ -1,157 +1,276 @@
+"""
+Rutina de código que implementa una versión del algoritmo genético continuo.
+
+Elaborado por: Johansell Villalobos 
+Ing. Física, TEC
+
+"""
+
+from geneticalgorithm import denormalize_params
 import numpy as np
 
-def probfunc(Imutprob, Nbred): 
-    return Imutprob*np.exp(-Nbred)
+class GenAlg(object): 
 
-class GenAlg(object):
-
-    def __init__(self, costfunc, I, ngenes, kfunc, Rred, nmut, mutprobfunc = probfunc, Ipopsize = 30, Fpopsize = 10, dpopsize = 5,
-                PXcross = 0.85, Imutprob = 0.9, Rabs=0.0001):
+    def __init__(self, costfunc, I, npop, ngenes, 
+                    ncross, nmut, epsilon, nparents, Rred, maxgen, 
+                    gentol, maxiter = 5000, abstol = 1e-20, 
+                    mutprob = 0.2): 
 
         self.costfunc = costfunc
-
         self.I = I
-        self.Ipopsize = Ipopsize
-        self.Fpopsize = Fpopsize
-        self.dpopsize = dpopsize
+        self.staticI = I.copy() 
+        self.npop = npop
         self.ngenes = ngenes
-        self.PXcross = PXcross
-        self.kfunc = kfunc
-        self.Imutprob = Imutprob
-        self.mutprobfunc = mutprobfunc
-        self.Rred = Rred
-        self.Rabs = Rabs
-        self.maxiter = ngenes*5
-        self.delta = self.I[1] - self.I[0] 
-        self.Rneigh = self.npop*self.ngenes
-        self.epsilon = self.delta/self.Rneigh
-        self.maxgen = 2*self.ngenes
+        self.ncross = ncross
         self.nmut = nmut
+        self.mutprob = mutprob
+        self.epsilon = epsilon
+        self.nparents = nparents
+        self.gentol = gentol
+        self.maxiter = maxiter
+        self.Rred = Rred
+        self.abstol = abstol 
+        self.maxgen = maxgen 
 
 
     def normalize_params(self, p):
-        phi = self.I[1]
-        plo = self.I[0]
+        """
+        Función que normaliza los genes respecto al espacio de solución.
+        p :: gen/dato
+        I :: intervalo que determina el espacio de solución 
+        """
+        phi = self.I[:,1] 
+        plo = self.I[:,0]
         pnorm = (p-plo)/(phi-plo)
         return pnorm
 
+
     def denormalize_params(self, pnorm):
-        phi = self.I[1]
-        plo = self.I[0]
+        """
+        Función que devuelve los genes a sus valores correspondientes en el espacio de solución.
+        pnorm :: gen/dato normalizado 
+        I :: intervalo que determina el espacio de solución 
+        """
+        phi = self.I[:,1] 
+        plo = self.I[:,0]
         p = (phi-plo)*pnorm + plo
         return p
 
-    def pop_generation(self):
 
-        npop = self.Ipopsize
+    def pop_generation(self):
+        """
+        Función generadora de una población esparcida por el espacio de solución. 
+
+        npop :: cantidad de individuos en la población
+        ngenes :: cantidad de variables a optimizar 
+        epsilon :: radio de distanciamiento entre individuos para un debido esparcimiento (normalizado).  
+        """
+        npop = self.npop
+        ngenes = self.ngenes 
         epsilon = self.epsilon
-        I = self.I
-        ngenes = self.ngenes
-        normeps = self.normalize_params(epsilon, I)
 
         pop = np.zeros((npop, ngenes))
         pop[0] = np.random.rand(ngenes)
         i = 1
-        while i < npop: 
+        j = 0
+        while i < npop: #se comparan los individuos para corrobar su debido esparcimiento
             poptemp = np.random.rand(ngenes)
             truthvect = np.zeros((i+1))
             for k in range(i+1):
                 ds = np.sqrt(np.sum((poptemp-pop[k])**2))
-                if ds >= normeps: 
+                if ds >= epsilon: 
                     truthvect[k] = True
             
             if truthvect.all(): 
                 pop[i] = poptemp 
                 i += 1 
+            j += 1
+        
         return pop
 
+
     def cost_eval(self, pop):
+        """
+        Evaluación de la función a optimizar. 
+
+        costfunc :: función a optimizar
+        pop :: población de individuos
+        I :: intervalo del espacio de solución
+
+        """
         costfunc = self.costfunc
-        I = self.I
-        
-        npop = len(pop)
-        poptemp = self.denormalize_params(pop, I)
+        npop = self.npop
+        poptemp = self.denormalize_params(pop)
         costvect = np.zeros(npop)
         for i in range(npop):
             costvect[i] = costfunc(poptemp[i])
+        
         return costvect
 
-    def selection(self, pop, nparents):
-        costvect = self.cost_eval(self.costfunc, pop, self.I)**2
-        total = np.sum(costvect)
-        pievect = costvect/total
-        pievect = np.sort(pievect)
-        inds = np.argsort(pievect)
-        parents = []
-        for j in range(nparents):
-            randnum = np.random.rand()
-            p = 0
-            i = 0
-            while p < randnum: 
-                p += pievect[i]
-                i += 1
 
-            parents.append(pop[inds[i]])
-        
-        return np.array(parents)
+    def selection(self, pop):
 
-    def recombination(self, pop, parents):
+        costs = self.cost_eval(pop)
+        sind = np.argsort(costs)
+        pop = pop[sind]
+        costs = costs[sind]
+        parents = pop[0:self.nparents]
 
-        nchildren = len(pop)-len(parents)
-        newpop = parents.copy()
+        return parents, pop, costs
 
-        for i in range(nchildren): 
-            ind1 = np.random.randint(0, len(parents))
-            ind2 = np.random.randint(0, len(parents))
 
-            child1 = parents[ind1]
-            child2 = parents[ind2]
+    def mating(self, parents):
+        """
+        Función que implementa el cruce entre los 2 individuos escogidos
 
-            indchange = np.random.randint(0, len(child1))
+        pfather, pmother :: individuos escogidos para el cruce.
+        n :: cantidad de genes a cruzar  
+        """
+        npop = self.npop
+        ngenes = self.ngenes
+        nparents = self.nparents
+        ncross = self.ncross
 
-            child1[indchange:-1] = child2[indchange:-1]
-            child2[indchange:-1] = child1[indchange:-1]
+        nextgen = np.zeros((npop, ngenes))        
+        nChildren = npop - nparents
+        nextgen[0:nparents] = parents
 
-            M = np.random.randint(1,1001)
-        
-            dx1 = child1[indchange]/M
-            dx2 = child2[indchange]/M
+        for i in range(nChildren):
+            indParents = np.random.randint(0,nparents, 2)
+            pfather = parents[indParents[0]]
+            pmother = parents[indParents[1]]
+            
+            offspring1 = pfather
+            offspring2 = pmother
 
-            child1[indchange] += dx2 - dx1
-            child2[indchange] += dx1 - dx2
-    
-            if np.random.rand() > 0.5: 
-                newpop = np.append(newpop, [child1], axis = 0)
+            indGenes = np.random.randint(0,ngenes, ncross)
+
+            for i in range(ncross):
+                A = indGenes[i]
+                pm = offspring1[A]
+                pf = offspring2[A]
+                beta = np.random.rand(1)
+                pnew1 = pm - beta*(pm-pf)
+                pnew2 = pf + beta*(pm-pf)
+
+                offspring1[A] = pnew2
+                offspring2[A] = pnew1
+
+            if np.random.rand()>0.5: 
+                child = offspring1
             else: 
-                newpop = np.append(newpop, [child2], axis = 0)
+                child = offspring2
+            
+            nextgen[nparents+i] = child
 
-        return newpop 
+        return nextgen
 
-    def mutation(self, ite, pop, s, mutprob):
-        nPop = len(pop)
-        probs = np.random.rand(nPop)
 
-        for i in range(nPop): 
+    def mutations(self,pop):
+        """
+        Función que muta genes de la población
 
-            if probs[i] > mutprob: 
-                randind = np.random.randint(0,len(pop[i]), size=s)
-                M = np.random.randint(1,11, size=s)
-                dx = self.delta/M
-                sign = np.random.randint(-1,1, size=s)
-                pop[i, randind] += sign*dx*self.kfunc(ite)
-        
-        return pop
+        percent :: porcentaje de genes a mutar
+        pop :: población de individuos
+
+        """
+        percent = self.mutprob
+        a, b = pop.shape
+        mutnum = np.round(a*b*percent/100).astype(int)
+
+        for i in range(mutnum):
+            ind1 = np.random.randint(0,a)
+            ind2 = np.random.randint(0,b)
+
+            pop[ind1, ind2] = np.random.rand()
+
+        return pop 
+
+    def distance_calc(self, pop):
+
+        dpop = self.denormalize_params(pop)
+        costs = self.cost_eval(pop)
+        inds = np.argsort(costs)
+        dpop = dpop[inds]
+        dif = dpop[0] - dpop[1:len(dpop)]
+        d = np.sqrt(np.sum(dif**2, axis=1))
+
+        return np.max(d)
+
+        #check for 
 
     def GA(self):
-        pop = self.pop_generation()     #Initialization
-        iters = 0
+        """
+        Función de implementación del algoritmo genético.
 
-        costs = cost_eval()
-        while iters < self.maxiter and 
-
-
-
-
+        costfunc :: función a optimizar
+        epsilon :: radio de distanciamiento entre individuos para un debido esparcimiento. 
+        ite :: número de iteraciones
+        ngenes :: número de variables del problema 
+        percent :: porcentaje de genes a mutar
+        I :: intervalo del espacio de solución
+        npop :: número de individuos en la población
+        nkeep :: número de individuos que se escogen para ser cruzados 
         
+        """
+        i = 0
+        j = 0
+        Nred = 0
+        pop = self.pop_generation() #definición de población inicial
+        coords = []
+        bestcost = []
+        k = True 
+        gens = 1
+        while k:
+            
+            parents, pop, costs = self.selection(pop)#escogencia de los mejores candidatos
+            coords.append(parents[0]) 
+            bestcost.append(costs[0])
+            pop = self.mating(parents)
+            pop = self.mutations(pop)
+            j += 1
+            if j > 10: 
+                movavg = np.mean(abs(np.diff(bestcost[-10:len(bestcost)])))
 
+                delta = np.sqrt(np.sum(self.I[:,1] - self.I[:,0])**2)
+
+                if delta > self.abstol: 
+
+                    if movavg <= self.gentol:
+                        Nred += 1
+                        gens = 0
+                        i += 1
+                        j = 0
+                        #print("Gen update")
+                        bestpoint = self.denormalize_params(pop[0])
+                        
+                        self.I[:,0] = bestpoint - delta/(Nred*self.Rred)
+                        self.I[:,1] = bestpoint + delta/(Nred*self.Rred)
+                        self.gentol /= 10
+
+                        lowerbool = self.I[:,0] >= self.staticI[:,0] 
+                        upperbool = self.I[:,1] <= self.staticI[:,1] 
+                        lowerind = np.where(lowerbool == False)
+                        upperind = np.where(upperbool == False)
+
+                        self.I[lowerind,0] = self.staticI[lowerind,0] 
+                        self.I[upperind,1] = self.staticI[upperind,1]
+
+                        pop = self.pop_generation()           
+                        #print(self.I)                 
+                else: 
+                    #print("D")
+                    k = False
+
+            if i > self.maxiter:
+                #print("H") 
+                k = False    
+
+            gens += 1
+            i += 1
+
+        decodedpop = self.denormalize_params(pop) #decodificación de parámetros
+        decodedcoords = self.denormalize_params(coords) #decodificación de coordenadas iniciales
+        print("Minimum Found after: "+str(i)+" iteraciones")
+        return decodedpop[0], costs, decodedcoords, bestcost
 
