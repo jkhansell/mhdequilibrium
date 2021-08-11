@@ -10,7 +10,7 @@ Ing. Física, TEC
 
 import numpy as np
 
-def biot(coildata, point):
+def biot(coildata, p):
     """
     Función que calcula el campo magnético de una serie de segmentos de bobina 
     definidos por puntos en el espacio.
@@ -34,6 +34,10 @@ def biot(coildata, point):
     point = np.array([x,y,z]) -- [2.660556e-01,1.297578e-02,-6.691423e-04]
     B = biot(coildata, point)
     """
+    x = p[0]*np.cos(p[1])
+    y = p[0]*np.sin(p[1])
+    point = np.array([x,y,p[2]])
+    
     mu_0 = 1e-7
     data = coildata.T[0:3].T
     Rf = point - data
@@ -53,6 +57,11 @@ def biot(coildata, point):
     e_vects = np.multiply(e_hat,coef_n)
     Ri = np.multiply(Rf[:,0:b-1], coef_m)
     B = np.cross(e_vects, Ri)
-    tot = np.sum(B, axis=(1,0))
-
-    return tot
+    tot = np.sum(B, axis=(1,0))   
+    
+    
+    phi = np.arctan2(point[1],point[0])+np.pi
+    Br = tot[0]*np.cos(phi)+tot[1]*np.sin(phi)
+    Bphi = -tot[0]*np.sin(phi)+tot[1]*np.cos(phi) 
+    
+    return np.array([Br, Bphi, tot[2]])
