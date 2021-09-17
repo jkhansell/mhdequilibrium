@@ -1,0 +1,16 @@
+#PBS -N bs-solctra-seq
+#PBS -q phi-n18h72
+#PBS -l nodes=1:ppn=64
+#PBS -l walltime=744:00:00
+#PBS -d /home/djimenez/bs-solctra/bs-solctra-seq/resultados
+
+export ID=${PBS_JOBID}
+
+cd $PBS_O_WORKDIR
+rm -Rf results_${ID}
+
+#module load valgrind/3.12.0-mpich-3.2
+module load gcc/7.2.0
+#valgrind --tool=memcheck --leak-check=yes ./bs-solctra-seq -length 8 -particles /home/djimenez/bs-solctra/input.txt -id $ID -resource /home/djimenez/bs-solctra/resources/ -mode 1 -magnetic_prof 1 100 0 -print_type 0
+./bs-solctra-seq -length 1024 -particles ../input_1000.txt -id $ID -resource /home/djimenez/bs-solctra/resources/ -mode 1 -magnetic_prof 1 100 0 2 -print_type 0
+
