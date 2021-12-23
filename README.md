@@ -7,8 +7,3 @@ Project on-course.
 Developer: 
 
 - Johansell Villalobos Cubillo -- IF
-
-Collaborators: 
-
-- Allan González Villalobos -- IF
-- Bryam Núñez Flores -- IF 
