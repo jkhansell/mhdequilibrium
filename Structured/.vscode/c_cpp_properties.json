@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/johan/Sandbox/amrex/Src/Base",
+                "/home/johan/Sandbox/amrex/tmp_build_dir/s/3d.gnu.MPI.EXE",
+                "/usr/include/x86_64-linux-gnu/mpich",
+                "/home/johan/Sandbox/amrex/Src/Particle",
+                "/home/johan/Sandbox/amrex/Src/LinearSolvers/MLMG",
+                "/home/johan/Sandbox/amrex/Src/Boundary",
+                "/home/johan/Sandbox/amrex/Src/AmrCore"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,50 @@
+=== If no file names and line numbers are shown below, one can run
+            addr2line -Cpfie my_exefile my_line_address
+    to convert `my_line_address` (e.g., 0x4a6b) into file name and line number.
+    Or one can use amrex/Tools/Backtrace/parse_bt.py.
+
+=== Please note that the line number reported by addr2line may not be accurate.
+    One can use
+            readelf -wl my_exefile | grep my_line_address'
+    to find out the offset for that line.
+
+ 0: ./aout(+0x1c17b5) [0x7f82932967b5]
+    ?? ??:0
+
+ 1: ./aout(+0x1c3525) [0x7f8293298525]
+    ?? ??:0
+
+ 2: /lib/x86_64-linux-gnu/libc.so.6(+0x46210) [0x7f8292a06210]
+
+ 3: ./aout(+0x177a28) [0x7f829324ca28]
+    ?? ??:0
+
+ 4: ./aout(+0x17ce07) [0x7f8293251e07]
+    ?? ??:0
+
+ 5: ./aout(+0x100c86) [0x7f82931d5c86]
+    ?? ??:0
+
+ 6: ./aout(+0x13fd41) [0x7f8293214d41]
+    ?? ??:0
+
+ 7: ./aout(+0x5e783) [0x7f8293133783]
+    std::_Vector_base<amrex::MultiFab const*, std::allocator<amrex::MultiFab const*> >::_M_deallocate(amrex::MultiFab const**, unsigned long) at /usr/include/c++/9/bits/stl_vector.h:350
+ (inlined by) std::_Vector_base<amrex::MultiFab const*, std::allocator<amrex::MultiFab const*> >::~_Vector_base() at /usr/include/c++/9/bits/stl_vector.h:332
+ (inlined by) std::vector<amrex::MultiFab const*, std::allocator<amrex::MultiFab const*> >::~vector() at /usr/include/c++/9/bits/stl_vector.h:680
+ (inlined by) amrex::Vector<amrex::MultiFab const*, std::allocator<amrex::MultiFab const*> >::~Vector() at /home/johan/cmakeinstall/include/AMReX_Vector.H:25
+ (inlined by) EMParticleContainer::computeRHS(amrex::Vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> > const&) at /home/johan/Sandbox/SCRPIC/Structured/Particles.cpp:190
+
+ 8: ./aout(+0x78457) [0x7f829314d457]
+    std::vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> >::~vector() at /usr/include/c++/9/bits/stl_vector.h:677
+ (inlined by) amrex::Vector<amrex::MultiFab*, std::allocator<amrex::MultiFab*> >::~Vector() at /home/johan/cmakeinstall/include/AMReX_Vector.H:25
+ (inlined by) main_main(GlobalData&, Coil*, Coil*) at /home/johan/Sandbox/SCRPIC/Structured/main.cpp:179
+
+ 9: ./aout(+0x4787b) [0x7f829311c87b]
+    main at /home/johan/Sandbox/SCRPIC/Structured/main.cpp:42
+
+10: /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf3) [0x7f82929e70b3]
+
+11: ./aout(+0x4ab3e) [0x7f829311fb3e]
+    ?? ??:0
+
