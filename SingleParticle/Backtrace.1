@@ -1,0 +1,38 @@
+=== If no file names and line numbers are shown below, one can run
+            addr2line -Cpfie my_exefile my_line_address
+    to convert `my_line_address` (e.g., 0x4a6b) into file name and line number.
+    Or one can use amrex/Tools/Backtrace/parse_bt.py.
+
+=== Please note that the line number reported by addr2line may not be accurate.
+    One can use
+            readelf -wl my_exefile | grep my_line_address'
+    to find out the offset for that line.
+
+ 0: ./aout(+0x1a4125) [0x7ff94c91b125]
+    ?? ??:0
+
+ 1: ./aout(+0x1a5e95) [0x7ff94c91ce95]
+    ?? ??:0
+
+ 2: ./aout(+0x75b71) [0x7ff94c7ecb71]
+    ?? ??:0
+
+ 3: ./aout(+0x83ba5) [0x7ff94c7faba5]
+    ?? ??:0
+
+ 4: ./aout(+0x556d6) [0x7ff94c7cc6d6]
+    std::_Deque_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*>::_Deque_iterator(std::_Deque_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*> const&) at /usr/include/c++/9/bits/stl_deque.h:169
+ (inlined by) std::deque<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::begin() at /usr/include/c++/9/bits/stl_deque.h:1194
+ (inlined by) std::deque<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::~deque() at /usr/include/c++/9/bits/stl_deque.h:1072
+ (inlined by) std::stack<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::deque<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::~stack() at /usr/include/c++/9/bits/stl_stack.h:99
+ (inlined by) amrex::ParmParse::~ParmParse() at /home/johan/cmakeinstall/include/AMReX_ParmParse.H:262
+ (inlined by) main_loop() at /mnt/d/Johansell/Documents/Fisica_computacional/CeNAT/SingleParticle/main.cpp:36
+
+ 5: ./aout(+0x32cce) [0x7ff94c7a9cce]
+    main at /mnt/d/Johansell/Documents/Fisica_computacional/CeNAT/SingleParticle/main.cpp:22
+
+ 6: /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf3) [0x7ff94c0870b3]
+
+ 7: ./aout(+0x35a6e) [0x7ff94c7aca6e]
+    ?? ??:0
+
