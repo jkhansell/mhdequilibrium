@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "Prob.H": "cpp",
+        "AmrParticles.H": "cpp",
+        "ParticleMesh.H": "cpp",
+        "bc_fill.H": "cpp",
+        "AmrCoreAdv.H": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "system_error": "cpp",
+        "AMReX_Extension.H": "cpp",
+        "compute_flux_2D_K.H": "cpp",
+        "AMReX_ccse-mpi.H": "cpp",
+        "AMReX_Box.H": "cpp",
+        "Tagging.H": "cpp"
+    }
+}

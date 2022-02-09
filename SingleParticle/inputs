@@ -1,6 +1,0 @@
-ncell = 64
-max_steps = 100000
-max_grid_size = 64
-num_particles = 100
-initial_velocity = 0 1e6 1e6 
-plot_int = 100
