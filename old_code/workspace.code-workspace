@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "Sandbox",
+			"path": "../.."
+		},
+		{
+			"name": "ExampleCodes",
+			"path": "../../../amrex-tutorials/ExampleCodes"
+		},
+		{
+			"name": "ecp-tutorials",
+			"path": "../../../ecp-tutorials"
+		},
+		{
+			"name": "Structured",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"vector": "cpp"
+		}
+	}
+}

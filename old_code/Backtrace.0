@@ -1,0 +1,35 @@
+=== If no file names and line numbers are shown below, one can run
+            addr2line -Cpfie my_exefile my_line_address
+    to convert `my_line_address` (e.g., 0x4a6b) into file name and line number.
+    Or one can use amrex/Tools/Backtrace/parse_bt.py.
+
+=== Please note that the line number reported by addr2line may not be accurate.
+    One can use
+            readelf -wl my_exefile | grep my_line_address'
+    to find out the offset for that line.
+
+ 0: ./aout(+0x1b2845) [0x7f79e1ff3845]
+    ?? ??:0
+
+ 1: ./aout(+0x1b45b5) [0x7f79e1ff55b5]
+    ?? ??:0
+
+ 2: /lib/x86_64-linux-gnu/libc.so.6(+0x46210) [0x7f79e1766210]
+
+ 3: ./aout(+0x1dedd6) [0x7f79e201fdd6]
+    ?? ??:0
+
+ 4: ./aout(+0x69692) [0x7f79e1eaa692]
+    amrex::ParticleContainer<0, 0, 5, 0, std::allocator>::RedistributeCPU(int, int, int, int) at /home/johan/cmakeinstall/include/AMReX_ParticleContainerI.H:1299
+
+ 5: ./aout(+0x5a84e) [0x7f79e1e9b84e]
+    AmrSPPartCont::InitParticles(int, double, double) at /mnt/d/Johansell/Documents/Fisica_computacional/CeNAT/SingleParticle/AmrParticles.cpp:72
+
+ 6: ./aout(+0x374d4) [0x7f79e1e784d4]
+    main at /mnt/d/Johansell/Documents/Fisica_computacional/CeNAT/SingleParticle/main.cpp:82
+
+ 7: /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf3) [0x7f79e17470b3]
+
+ 8: ./aout(+0x3aafe) [0x7f79e1e7bafe]
+    ?? ??:0
+

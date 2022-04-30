@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"interp2d.h": "c",
+			"gsl_errno.h": "c",
+			"ctsv.h": "c",
+			"equations.h": "c",
+			"regex": "cpp",
+			"*.tcc": "cpp",
+			"memory_resource": "cpp",
+			"random": "cpp",
+			"memory": "cpp",
+			"type_traits": "cpp",
+			"dense": "cpp"
+		}
+	}
+}

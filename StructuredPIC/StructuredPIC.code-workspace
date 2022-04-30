@@ -1,0 +1,72 @@
+{
+	"folders": [
+		{
+			"name": "ExampleCodes",
+			"path": "../../../amrex-tutorials/ExampleCodes"
+		},
+		{
+			"name": "ecp-tutorials",
+			"path": "../../../ecp-tutorials"
+		},
+		{
+			"name": "Structured",
+			"path": "."
+		},
+		{
+			"name": "SingleParticle",
+			"path": "../SingleParticle"
+		},
+		{
+			"name": "amrex",
+			"path": "../../amrex"
+		},
+		{
+			"path": "../PoissonSolver"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"vector": "cpp",
+			"AMReX_Extension.H": "cpp",
+			"AMReX_MultiFabUtil.H": "cpp",
+			"AMReX_MLMG.H": "cpp",
+			"AMReX_Particles.H": "cpp",
+			"AMReX_ParticleContainerBase.H": "cpp",
+			"AMReX_MultiFab.H": "cpp",
+			"new": "cpp",
+			"AMReX_Vector.H": "cpp",
+			"*.tcc": "cpp",
+			"optional": "cpp",
+			"istream": "cpp",
+			"ostream": "cpp",
+			"ratio": "cpp",
+			"system_error": "cpp",
+			"array": "cpp",
+			"functional": "cpp",
+			"regex": "cpp",
+			"tuple": "cpp",
+			"type_traits": "cpp",
+			"utility": "cpp",
+			"em_pic_K.H": "cpp",
+			"EMParticleContainer.H": "cpp",
+			"Evolve.H": "cpp",
+			"AmrCoreAdv.H": "cpp",
+			"Tagging.H": "cpp",
+			"bc_fill.H": "cpp",
+			"Prob.H": "cpp",
+			"face_velocity.H": "cpp",
+			"Kernels.H": "cpp",
+			"compute_flux_2D_K.H": "cpp",
+			"Adv_K.H": "cpp",
+			"compute_flux_3D_K.H": "cpp",
+			"slope_K.H": "cpp",
+			"AMReX_GpuElixir.H": "cpp",
+			"AMReX_TagBox.H": "cpp",
+			"AMReX_AmrCore.H": "cpp",
+			"AMReX_Utility.H": "cpp",
+			"AMReX_BCRec.H": "cpp",
+			"AMReX_BC_TYPES.H": "cpp",
+			"AMReX_AmrMesh.H": "cpp"
+		}
+	}
+}

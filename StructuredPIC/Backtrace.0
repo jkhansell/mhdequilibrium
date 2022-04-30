@@ -1,0 +1,32 @@
+=== If no file names and line numbers are shown below, one can run
+            addr2line -Cpfie my_exefile my_line_address
+    to convert `my_line_address` (e.g., 0x4a6b) into file name and line number.
+    Or one can use amrex/Tools/Backtrace/parse_bt.py.
+
+=== Please note that the line number reported by addr2line may not be accurate.
+    One can use
+            readelf -wl my_exefile | grep my_line_address'
+    to find out the offset for that line.
+
+ 0: ./aout(+0x1c1ae5) [0x7fd2e2a9bae5]
+    ?? ??:0
+
+ 1: ./aout(+0x1c3855) [0x7fd2e2a9d855]
+    ?? ??:0
+
+ 2: /lib/x86_64-linux-gnu/libc.so.6(+0x46210) [0x7fd2e21f6210]
+
+ 3: ./aout(+0x60b22) [0x7fd2e293ab22]
+    EMParticleContainer::computejfield() at /home/johan/Sandbox/SCRPIC/Structured/Particles.cpp:249
+
+ 4: ./aout(+0x78769) [0x7fd2e2952769]
+    main_main(GlobalData&, Coil*, Coil*) at /home/johan/Sandbox/SCRPIC/Structured/main.cpp:173 (discriminator 2)
+
+ 5: ./aout(+0x4775b) [0x7fd2e292175b]
+    main at /home/johan/Sandbox/SCRPIC/Structured/main.cpp:42
+
+ 6: /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf3) [0x7fd2e21d70b3]
+
+ 7: ./aout(+0x4aa1e) [0x7fd2e2924a1e]
+    ?? ??:0
+
