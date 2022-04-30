@@ -1,9 +1,11 @@
 # MHD Equilibrium
 
-This is a repository of the scripts made for the ITCR Plasma Laboratory. Takes into account analysis and variable calculations from computational simulations of the MEDUSA and SCR 1 devices. 
+This is a repository of project scripts for the ITCR Plasma Laboratory. It considers some magnetic field calculation routines for the MEDUSA tokamak, particle trajectories using the SCR-1 magnetic field, and diagnostics for SCR-1 magnetic field errors.
 
-Project on-course.
+These projects are still on-course and updated periodically.
 
-Developer: 
+Developer:
 
 - Johansell Villalobos Cubillo -- IF
+
+#
