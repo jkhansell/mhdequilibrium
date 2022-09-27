@@ -59,9 +59,7 @@ def biot(coildata, p):
     B = np.cross(e_vects, Ri)
     tot = np.sum(B, axis=(1,0))   
     
-    
-    phi = np.arctan2(point[1],point[0])+np.pi
-    Br = tot[0]*np.cos(phi)+tot[1]*np.sin(phi)
-    Bphi = -tot[0]*np.sin(phi)+tot[1]*np.cos(phi) 
+    Br = tot[0]*np.cos(p[1])+tot[1]*np.sin(p[1])
+    Bphi = -tot[0]*np.sin(p[1])+tot[1]*np.cos([1]) 
     
     return np.array([Br, Bphi, tot[2]])
